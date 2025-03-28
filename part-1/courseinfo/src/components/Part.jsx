@@ -1,9 +1,10 @@
 import React from 'react'
 
 const Part = ( props ) => {
+
   return (
     <p>
-        {props.part} {props.exercises}
+        {props.parts} {props.exercises}
     </p>
   )
 }
