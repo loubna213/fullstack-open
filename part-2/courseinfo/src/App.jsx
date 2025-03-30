@@ -22,11 +22,15 @@ const Total = (props) => {
   )
 }
 
+
 const Course = ({ course }) => {
   return (
     <>
       <Header course={course.name} />
       <Content parts={course.parts} />
+      <Total
+        total={course.parts}
+      />
     </>
   )
 }
