@@ -22,7 +22,6 @@ const Total = (props) => {
   )
 }
 
-
 const Course = ({ course }) => {
   return (
     <>
