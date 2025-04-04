@@ -18,7 +18,6 @@ const App = () => {
     )
   }, [])
 
-  console.log(persons)
 
   const handleSubmit = (e) => {
     e.preventDefault()
@@ -28,11 +27,16 @@ const App = () => {
     if (personExists) {
       alert(`${newName} is already added to phonebook`);
     } else {
-      const nameObj = {
+      const newObj = {
         name: newName,
         number: newNumber
       };
-      setPersons(persons.concat(nameObj));
+      
+      axios.post("http://localhost:3001/persons", newObj)
+      .then(res => console.log(res))
+      .catch( err => console.log(err.message))
+
+      setPersons(persons.concat(newObj));
     }
 
     setNewName('');
