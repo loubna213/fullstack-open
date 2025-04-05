@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import PersonsList from './components/PersonsList'
-import { addPerson, getAll } from './services/persons'
+import { addPerson, deletePerson, getAll } from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -29,14 +29,21 @@ const App = () => {
       };
       
       addPerson(newObj)
-      .then(data => setPersons(persons.concat(newObj)))
+      .then(data => setPersons(persons.concat(data)))
       
       setPersons(persons.concat(newObj));
     }
 
     setNewName('');
     setNewNumber('');
- }
+  }
+
+  const handleDelete = (id) => {
+    deletePerson(id).then(data => {
+      confirm(`delete ${data.name}`)
+      setPersons(persons.filter(person => person.id !== data.id))
+    })
+  }
 
   return (
     <div>
@@ -47,7 +54,7 @@ const App = () => {
       <Form handleSubmit={handleSubmit} setNewName={setNewName} setNewNumber={setNewNumber} newName={newName} newNumber={newNumber}/>
       
       <h2>Numbers</h2>
-      <PersonsList persons={persons} filter={filter}/>
+      <PersonsList persons={persons} filter={filter} handleDelete={handleDelete} />
     </div>
   )
 }

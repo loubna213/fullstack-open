@@ -11,3 +11,8 @@ export const addPerson = (newObj) => {
     const request = axios.post(baseUrl, newObj)
     return request.then( res => res.data)
 }
+
+export const deletePerson = (id) => {
+    const request = axios.delete(`http://localhost:3001/persons/${id}`)
+    return request.then(res => res.data)
+}

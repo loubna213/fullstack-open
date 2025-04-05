@@ -1,13 +1,13 @@
 import React from 'react'
+import Person from './Person'
 
-const PersonsList = ({ persons, filter }) => {
-  console.log(persons)
+const PersonsList = ({ persons, filter, handleDelete }) => {
   return (
     <div>debug: { 
         persons.length < 0 
         ? <p>start adding numbers</p> 
         : persons.map(person => person.name.toLowerCase().includes(filter) && 
-        <div key={person.name}><span>{person.name}</span> <span>{person.number}</span></div>)}
+          <Person key={person.name} person={person} handleDelete={() => handleDelete(person.id)} />)}
     </div>
   )
 }
