@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Filter from './components/Filter'
 import Form from './components/Form'
 import PersonsList from './components/PersonsList'
-import { addPerson, deletePerson, getAll } from './services/persons'
+import { addPerson, deletePerson, getAll, updatePerson } from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -16,24 +16,36 @@ const App = () => {
   }, [])
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const personExists = persons.some(person => person.name === newName);
-
-    if (personExists) {
-      alert(`${newName} is already added to phonebook`);
+    e.preventDefault();
+  
+    const existingPerson = persons.find(person => person.name === newName);
+  
+    if (existingPerson) {
+      if (existingPerson.number === newNumber) {
+        alert(`${newName} is already added to phonebook`);
+      } else {
+        const confirmReplace = confirm(`${newName} is already added to phonebook, do you want to replace the old number with the new one?`);
+        if (confirmReplace) {
+          updatePerson(existingPerson.id, { ...existingPerson, number: newNumber })
+            .then(updatedPerson => {
+              setPersons(persons.map(person => person.id !== existingPerson.id ? person : updatedPerson));
+            }
+          );
+        }
+      }
     } else {
       const newObj = {
         name: newName,
         number: newNumber
       };
-      
+  
       addPerson(newObj)
-      .then(data => setPersons(persons.concat(data)))
-      
-      setPersons(persons.concat(newObj));
+        .then(addedPerson => {
+          setPersons(persons.concat(addedPerson));
+        }
+      );
     }
-
+  
     setNewName('');
     setNewNumber('');
   }
