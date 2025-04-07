@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Message = ({ message }) => {
+const Message = ({ message, status }) => {
   return (
-    <p className={`${message ? 'message' : ''}`}>{message}</p>
+    <p className={`${status === 'success' ? 'message success' : status === 'failed' ? 'message failed' : ''}`}>{message}</p>
   )
 }
 

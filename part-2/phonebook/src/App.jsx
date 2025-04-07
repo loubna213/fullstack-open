@@ -10,7 +10,8 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [filter, setFilter] = useState('')
-  const [message, setMessage] = useState('')
+  const [message, setMessage] = useState(null)
+  const [status, setStatus] = useState(null)
 
 
   useEffect(() => {
@@ -32,9 +33,22 @@ const App = () => {
             .then(updatedPerson => {
               setPersons(persons.map(person => person.id !== existingPerson.id ? person : updatedPerson));
               setMessage(`updated ${updatedPerson.name}`)
-              setTimeout(() => {setMessage(null)}, 3000)
+              setStatus('success')
+              setTimeout(() => { 
+                setMessage(null) 
+                setStatus(null)
+              }, 3000)
             }
-          );
+          )
+          .catch(error => {
+            console.log(error)
+            setMessage(error.message)
+            setStatus('failed')
+            setTimeout(() => {
+              setMessage(null)
+              setStatus(null)
+            }, 3000)
+          })
         }
       }
     } else {
@@ -47,9 +61,22 @@ const App = () => {
         .then(addedPerson => {
           setPersons(persons.concat(addedPerson));
           setMessage(`Added ${addedPerson.name}`)
-          setTimeout(() => {setMessage( null )}, 3000)
+          setStatus('success')
+          setTimeout(() => {
+            setMessage( null )
+            setStatus(null)
+          }, 3000)
         }
-      );
+      )
+      .catch(error => {
+        console.log(error)
+        setMessage(error.message)
+        setStatus('failed')
+        setTimeout(() => {
+          setMessage(null)
+          setStatus(null)
+        }, 3000)
+      })
     }
   
     setNewName('');
@@ -57,18 +84,32 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    deletePerson(id).then(data => {
+    deletePerson(id)
+    .then(data => {
       confirm(`delete ${data.name}`)
       setPersons(persons.filter(person => person.id !== data.id))
       setMessage(`Deleted ${data.name}`)
-      setTimeout(() => {setMessage(null)}, 3000)
+      setStatus('success')
+      setTimeout(() => {
+        setMessage(null)
+        setStatus(null)
+      }, 3000)
+    })
+    .catch(error => {
+      console.log(error)
+      setMessage(error.message)
+      setStatus('failed')
+      setTimeout(() => {
+        setMessage(null)
+        setStatus(null)
+      }, 3000)
     })
   }
 
   return (
     <div>
       <h2>Phonebook</h2>
-      <Message message={message} />
+      <Message message={message} status={status}/>
       <Filter filter={filter} setFilter={setFilter}/>
 
       <h3>Add a new</h3>
