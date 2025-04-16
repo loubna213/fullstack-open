@@ -58,6 +58,16 @@ app.delete('/api/persons/:id', (req, res) => {
     res.json(persons)
 })
 
+app.post('/api/persons', (req, res) => {
+    const id = Date.now()
+    const person = req.body
+    const newPerson = {
+        id,
+        ...person,
+    }
+    res.json(newPerson)
+})
+
 
 const PORT = 3000
 
