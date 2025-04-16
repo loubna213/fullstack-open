@@ -63,16 +63,13 @@ app.delete('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
     const person = req.body
-    if(person) {
-        const id = Date.now()
-        const newPerson = {
-            id,
-            ...person,
-        }
-        res.json(newPerson)
-    } else {
-        res.status(404).send({error: 'name must be unique'})
+    const id = Date.now()
+    const newPerson = {
+        id,
+        ...person,
     }
+    res.json(newPerson)
+    
 })
 
 const unknownEndpoint = (request, response) => {
