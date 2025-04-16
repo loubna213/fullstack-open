@@ -21,7 +21,7 @@ const App = () => {
       }
     ]
   }
-
+  
   return (
     <div>
       <Header course={course.name} />

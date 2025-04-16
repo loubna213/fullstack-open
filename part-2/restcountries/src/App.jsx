@@ -6,7 +6,6 @@ import Country from './components/Country'
 const App = () => {
   const [country, setCountry] = useState(null)
   const [query, setQuery] = useState('')
-
   
   useEffect(() => {
     query.length > 0 && axios.get(`https://studies.cs.helsinki.fi/restcountries/api/name/${query}`)
