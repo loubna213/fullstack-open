@@ -1,8 +1,11 @@
 const express = require('express')
+const morgan = require('morgan')
 
 const app = express()
 
 app.use(express.json())
+app.use(morgan('tiny'))
+
 
 let persons = [
     { 
@@ -59,21 +62,26 @@ app.delete('/api/persons/:id', (req, res) => {
 })
 
 app.post('/api/persons', (req, res) => {
-    const id = Date.now()
     const person = req.body
     if(person) {
+        const id = Date.now()
         const newPerson = {
             id,
             ...person,
         }
         res.json(newPerson)
     } else {
-        res.status(204).end().write(" error: 'name must be unique'")
+        res.status(404).send({error: 'name must be unique'})
     }
 })
 
+const unknownEndpoint = (request, response) => {
+    response.status(404).send({ error: 'unknown endpoint' })
+}
+  
+app.use(unknownEndpoint)
 
-const PORT = 3000
+const PORT = 8000
 
 app.listen(PORT, () => {
     console.log(`server running on port ${PORT}...`)
